@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Add custom markers in Mapbox GL JS</title>
+    <title>Girringun IPA title map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans"
@@ -51,7 +51,9 @@
         accessToken: 'pk.eyJ1Ijoid29tYmF0LW1hcHMiLCJhIjoiY212bHpnYng4MDFuOTMwb2Y1MW12b200dyJ9.TMR7I4sA-miKE9dGtGPgEw',
         container: 'map',
         style: 'mapbox://styles/wombat-maps/cmvmeig1600ep01so1yyt0mpt',
-      });
+        center:
+        [146.05,-18.5],
+        zoom:10.01}) // starting position [lng, lat]});
     
       // add markers to map
     for (const feature of geojson.features) {
