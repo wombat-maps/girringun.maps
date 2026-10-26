@@ -1,53 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Girringun IPA title map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans"
-      rel="stylesheet"
-    />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.25.0/mapbox-gl.js"></script>
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v3.25.0/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Mapbox GL JS Map</title>
+    
+    <!-- Mapbox GL JS CDN Stylesheet -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.33.0/mapbox-gl.css" rel="stylesheet">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-      #map {
-        position: absolute;
-        top: 10px;
-        bottom: 10px;
-        width: 100%;
-      }
-        .mapboxgl-popup {
-      max-width: 200px;
-    }
-
-    .mapboxgl-popup-content {
-      text-align: center;
-      font-family: 'Open Sans', sans-serif;
-    }
-    </style>
-  </head>
-  <body>
+    <!-- The container where the map will be injected -->
     <div id="map"></div>
 
-    <script>
-    const map = new mapboxgl.Map({
-        accessToken: 'pk.eyJ1Ijoid29tYmF0LW1hcHMiLCJhIjoiY212bHpnYng4MDFuOTMwb2Y1MW12b200dyJ9.TMR7I4sA-miKE9dGtGPgEw',
-        container: 'map',
-        style: 'mapbox://styles/wombat-maps/cmvmeig1600ep01so1yyt0mpt',
-        center:
-        [146.05,-18.5],
-        zoom:10.01})
+    <!-- Mapbox GL JS CDN JavaScript -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.33.0/mapbox-gl.js"></script>
     
-    
-    </script>
-  </body>
+    <!-- Custom Map Logic Script -->
+    <script src="map.js"></script>
+</body>
 </html>
