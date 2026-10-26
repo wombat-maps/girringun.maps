@@ -323,50 +323,46 @@ const legendControl = {
 };
 
 map.addControl(legendControl, 'bottom-left');
-const cadastreLayerId = 'girringun-cadastre';
+map.addSource('cadastre-direct-source', {
+    type: 'vector',
+    url: 'mapbox://wombat-maps.zukeyi'
+});
 
-const cadastreLayer = map.getLayer(cadastreLayerId);
+map.addLayer({
+    id: 'cadastre-popup-target',
+    type: 'fill',
+    source: 'cadastre-direct-source',
+    'source-layer': 'girringun-cadastre',
+    paint: {
+        // Nearly transparent so the layer is clickable without obscuring the map.
+        'fill-color': 'rgba(0, 0, 0, 0.01)'
+    }
+});
 
-if (!cadastreLayer) {
-    console.warn('Cadastre style layer not found:', cadastreLayerId);
-    console.log(
-        'Available layer IDs:',
-        map.getStyle().layers.map(function (layer) {
-            return layer.id;
-        })
-    );
-} else {
-    console.log('Cadastre layer found:', {
-        id: cadastreLayer.id,
-        source: cadastreLayer.source,
-        sourceLayer: cadastreLayer['source-layer'],
-        visibility: map.getLayoutProperty(cadastreLayerId, 'visibility')
+map.on('click', 'cadastre-popup-target', function (event) {
+    const feature = event.features && event.features[0];
+    if (!feature) return;
+
+    const properties = feature.properties || {};
+    const content = document.createElement('div');
+
+    ['LOT', 'PLAN'].forEach(function (key) {
+        const row = document.createElement('div');
+        row.textContent = key + ': ' + (properties[key] ?? 'Not available');
+        content.appendChild(row);
     });
 
-    // Listen to map clicks so we can inspect what is actually rendered there.
-    map.on('click', function (event) {
-        const features = map.queryRenderedFeatures(event.point, {
-            layers: [cadastreLayerId]
-        });
+    new mapboxgl.Popup()
+        .setLngLat(event.lngLat)
+        .setDOMContent(content)
+        .addTo(map);
+});
 
-        console.log('Cadastre features at click:', features.length, features);
+map.on('mouseenter', 'cadastre-popup-target', function () {
+    map.getCanvas().style.cursor = 'pointer';
+});
 
-        const feature = features[0];
-        if (!feature) return;
-
-        const properties = feature.properties || {};
-        const content = document.createElement('div');
-
-        ['LOT', 'PLAN'].forEach(function (key) {
-            const row = document.createElement('div');
-            row.textContent = key + ': ' + (properties[key] ?? 'Not available');
-            content.appendChild(row);
-        });
-
-        new mapboxgl.Popup()
-            .setLngLat(event.lngLat)
-            .setDOMContent(content)
-            .addTo(map);
-    });
-}
+map.on('mouseleave', 'cadastre-popup-target', function () {
+    map.getCanvas().style.cursor = '';
+});
 });
