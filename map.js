@@ -5,6 +5,7 @@ const map = new mapboxgl.Map({
     style: 'mapbox://styles/wombat-maps/cmvmeig1600ep01so1yyt0mpt',
     center: [146.282, -18.306],
     zoom: 8
+    failIfMajorPerformanceCaveat: false
 });
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
