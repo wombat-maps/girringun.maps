@@ -3,7 +3,7 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoid29tYmF0LW1hcHMiLCJhIjoiY212cDd4bnd3MHp5YjJ6c
 
 const map = new mapboxgl.Map({
     container: 'map', // Matches the ID of the div in index.html
-    style: 'mapbox://styles/mapbox/streets-vmapbox://styles/wombat-maps/cmvmeig1600ep01so1yyt0mpt', // Map style to use
+    style: 'mapbox://styles/wombat-maps/cmvmeig1600ep01so1yyt0mpt', // Map style to use
     center: [146.282,-18.306], // Starting position [longitude, latitude]
     zoom: 8 // Starting zoom level (0 is global view, higher numbers zoom in)
 });
