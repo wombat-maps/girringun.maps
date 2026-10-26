@@ -332,7 +332,7 @@ map.addLayer({
     id: 'cadastre-popup-target',
     type: 'fill',
     source: 'cadastre-direct-source',
-    'source-layer': 'girringun-cadastre',
+    'source-layer': 'girringun_cadastre',
     paint: {
         // Nearly transparent so the layer is clickable without obscuring the map.
         'fill-color': 'rgba(0, 0, 0, 0.01)'
