@@ -323,4 +323,50 @@ const legendControl = {
 };
 
 map.addControl(legendControl, 'bottom-left');
+const cadastreLayerId = 'girringun-cadastre';
+
+if (map.getLayer(cadastreLayerId)) {
+    map.on('click', cadastreLayerId, function (event) {
+        const feature = event.features && event.features[0];
+        if (!feature) return;
+
+        const properties = feature.properties || {};
+        const popupContent = document.createElement('div');
+
+        [
+            ['LOT', properties.LOT],
+            ['PLAN', properties.PLAN]
+        ].forEach(function ([label, value]) {
+            const row = document.createElement('div');
+            const strong = document.createElement('strong');
+
+            strong.textContent = label + ': ';
+            row.appendChild(strong);
+            row.appendChild(
+                document.createTextNode(
+                    value === undefined || value === null || value === ''
+                        ? 'Not available'
+                        : String(value)
+                )
+            );
+
+            popupContent.appendChild(row);
+        });
+
+        new mapboxgl.Popup()
+            .setLngLat(event.lngLat)
+            .setDOMContent(popupContent)
+            .addTo(map);
+    });
+
+    map.on('mouseenter', cadastreLayerId, function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', cadastreLayerId, function () {
+        map.getCanvas().style.cursor = '';
+    });
+} else {
+    console.warn('Cadastre style layer not found:', cadastreLayerId);
+}
 });
