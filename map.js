@@ -325,48 +325,48 @@ const legendControl = {
 map.addControl(legendControl, 'bottom-left');
 const cadastreLayerId = 'girringun-cadastre';
 
-if (map.getLayer(cadastreLayerId)) {
-    map.on('click', cadastreLayerId, function (event) {
-        const feature = event.features && event.features[0];
+const cadastreLayer = map.getLayer(cadastreLayerId);
+
+if (!cadastreLayer) {
+    console.warn('Cadastre style layer not found:', cadastreLayerId);
+    console.log(
+        'Available layer IDs:',
+        map.getStyle().layers.map(function (layer) {
+            return layer.id;
+        })
+    );
+} else {
+    console.log('Cadastre layer found:', {
+        id: cadastreLayer.id,
+        source: cadastreLayer.source,
+        sourceLayer: cadastreLayer['source-layer'],
+        visibility: map.getLayoutProperty(cadastreLayerId, 'visibility')
+    });
+
+    // Listen to map clicks so we can inspect what is actually rendered there.
+    map.on('click', function (event) {
+        const features = map.queryRenderedFeatures(event.point, {
+            layers: [cadastreLayerId]
+        });
+
+        console.log('Cadastre features at click:', features.length, features);
+
+        const feature = features[0];
         if (!feature) return;
 
         const properties = feature.properties || {};
-        const popupContent = document.createElement('div');
+        const content = document.createElement('div');
 
-        [
-            ['LOT', properties.LOT],
-            ['PLAN', properties.PLAN]
-        ].forEach(function ([label, value]) {
+        ['LOT', 'PLAN'].forEach(function (key) {
             const row = document.createElement('div');
-            const strong = document.createElement('strong');
-
-            strong.textContent = label + ': ';
-            row.appendChild(strong);
-            row.appendChild(
-                document.createTextNode(
-                    value === undefined || value === null || value === ''
-                        ? 'Not available'
-                        : String(value)
-                )
-            );
-
-            popupContent.appendChild(row);
+            row.textContent = key + ': ' + (properties[key] ?? 'Not available');
+            content.appendChild(row);
         });
 
         new mapboxgl.Popup()
             .setLngLat(event.lngLat)
-            .setDOMContent(popupContent)
+            .setDOMContent(content)
             .addTo(map);
     });
-
-    map.on('mouseenter', cadastreLayerId, function () {
-        map.getCanvas().style.cursor = 'pointer';
-    });
-
-    map.on('mouseleave', cadastreLayerId, function () {
-        map.getCanvas().style.cursor = '';
-    });
-} else {
-    console.warn('Cadastre style layer not found:', cadastreLayerId);
 }
 });
